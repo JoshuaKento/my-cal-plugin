@@ -1,0 +1,24 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "My CalGPT",
+    "name_for_model": "my_calendar",
+    "description_for_human": "Google カレンダーと連携できるプラグイン",
+    "description_for_model": "Google Calendar の予定取得・登録を行うプラグインです。",
+    "auth": {
+      "type": "oauth",
+      "client_url": "https://my-cal-plugin.vercel.app/api/auth",
+      "authorization_url": "https://accounts.google.com/o/oauth2/v2/auth",
+      "token_url": "https://oauth2.googleapis.com/token",
+      "scopes": [
+        "https://www.googleapis.com/auth/calendar.events"
+      ]
+    },
+    "api": {
+      "type": "openapi",
+      "url": "https://my-cal-plugin.vercel.app/openapi.yaml"
+    },
+    "logo_url": "https://my-cal-plugin.vercel.app/logo.png",
+    "contact_email": "kentodoi.kn@gmail.com",
+    "legal_info_url": "https://my-cal-plugin.vercel.app/legal"
+  }
+  
