@@ -1,24 +1,22 @@
 import { google } from 'googleapis';
 
+// OAuth2クライアントを初期化（リダイレクトURIは後述の環境変数に設定）
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
+
+// 要求するOAuthスコープ（予定の閲覧・作成に必要なカレンダーイベント権限）
+const SCOPE = ['https://www.googleapis.com/auth/calendar.events'];
+
 export default function handler(req, res) {
-  // 本番・プレビューは https:// を付ける
-  const prodRedirect = `https://${process.env.VERCEL_URL}/api/oauth-callback`;
-  // ローカル開発用
-  const localRedirect = 'http://localhost:3000/api/oauth-callback';
-
-  const redirectUri =
-    process.env.VERCEL_ENV === 'development' ? localRedirect : prodRedirect;
-
-  const oauth2Client = new google.auth.OAuth2(
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET,
-    redirectUri
-  );
-
-  const url = oauth2Client.generateAuthUrl({
+  // Googleの認可URLを生成（access_type=offlineでリフレッシュトークン取得を要求）
+  const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/calendar.events']
+    scope: SCOPE,
+    prompt: 'consent'  // 毎回同意画面を表示して確実にリフレッシュトークンを得る
   });
-
-  res.redirect(url);
+  // ユーザーをGoogleのOAuth同意画面へリダイレクト
+  res.redirect(authUrl);
 }
