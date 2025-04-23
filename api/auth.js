@@ -17,6 +17,7 @@ export default function handler(req, res) {
     scope: SCOPE,
     prompt: 'consent'  // 毎回同意画面を表示して確実にリフレッシュトークンを得る
   });
+  console.log('Google Auth URL:', authUrl);
   // ユーザーをGoogleのOAuth同意画面へリダイレクト
   res.redirect(authUrl);
 }
